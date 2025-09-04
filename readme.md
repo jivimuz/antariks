@@ -6,8 +6,14 @@ This project is a professional and interactive landing page for the IT company "
 
 Here is a visual preview of the landing page:
 
-![Preview](img1.png)
-![Preview](img2.png)
+![Preview](image/img1.png)
+![Preview](image/img2.png)
+
+## Live Demo
+
+Experience the live demo of the landing page here:
+
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-ANTARIKS-2563EB?style=for-the-badge)](https://antariks.vercel.app/)
 
 ## Key Features
 
