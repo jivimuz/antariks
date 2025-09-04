@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ANTARIKS - IT Solution</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="js/tailwind.js"></script>
+    <!-- Font Inter from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="css/tailwind.css" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #1a202c; /* Dark background */
+        color: #e2e8f0; /* Light text color */
+      }
+      .fade-in {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      }
+      .in-view {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .modal {
+        display: none;
+      }
+      .project-image-container {
+        position: relative;
+        overflow: hidden;
+      }
+      .project-image-container img {
+        transition: transform 0.3s ease-in-out;
+      }
+      .project-image-container:hover img {
+        transform: scale(1.05);
+      }
+      /* Parallax effect for hero section */
+      .parallax {
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+      @media (max-width: 768px) {
+        .parallax {
+          background-attachment: scroll;
+        }
+      }
+      /* Custom styles for portfolio grid */
+      .portfolio-grid-item {
+        position: relative;
+        overflow: hidden;
+        border-radius: 1rem; /* rounded-2xl */
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-xl */
+      }
+      .portfolio-grid-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+      .portfolio-grid-item:hover img {
+        transform: scale(1.1);
+      }
+      .portfolio-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        text-align: center;
+        padding: 1rem;
+      }
+      .portfolio-grid-item:hover .portfolio-overlay {
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-900 text-gray-200 antialiased">
+    <!-- Header & Navigation -->
+    <header
+      class="bg-gray-900 bg-opacity-80 backdrop-blur-md shadow-lg fixed w-full z-50 transition-all duration-300"
+    >
+      <div
+        class="container mx-auto px-4 md:px-6 py-4 flex justify-between items-center"
+      >
+        <a href="#" class="flex items-center space-x-2">
+          <!-- Antariks Logo -->
+          <img src="image/logo.png" alt="Antariks Logo" class="h-10 md:h-16" />
+        </a>
+        <nav class="hidden md:flex space-x-4 lg:space-x-8 items-center">
+          <a
+            href="#about"
+            class="text-gray-400 hover:text-emerald-500 font-medium transition-colors duration-300"
+            >About Us</a
+          >
+          <a
+            href="#features"
+            class="text-gray-400 hover:text-emerald-500 font-medium transition-colors duration-300"
+            >Services</a
+          >
+          <a
+            href="#portfolio"
+            class="text-gray-400 hover:text-emerald-500 font-medium transition-colors duration-300"
+            >Portfolio</a
+          >
+          <a
+            href="#testimonials"
+            class="text-gray-400 hover:text-emerald-500 font-medium transition-colors duration-300"
+            >Testimonials</a
+          >
+          <a
+            href="#location"
+            class="text-gray-400 hover:text-emerald-500 font-medium transition-colors duration-300"
+            >Location</a
+          >
+          <button
+            id="cta-header-btn"
+            class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-6 rounded-full shadow-lg transition-all duration-300 transform hover:-translate-y-1"
+          >
+            Get Started
+          </button>
+        </nav>
+        <button
+          id="mobile-menu-button"
+          class="md:hidden text-gray-400 hover:text-emerald-500 focus:outline-none"
+        >
+          <svg
+            class="w-8 h-8"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16m-7 6h7"
+            ></path>
+          </svg>
+        </button>
+      </div>
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="hidden md:hidden bg-gray-900 shadow-lg py-2">
+        <a
+          href="#about"
+          class="block px-6 py-3 text-gray-400 hover:bg-gray-800 transition-colors duration-200"
+          >About Us</a
+        >
+        <a
+          href="#features"
+          class="block px-6 py-3 text-gray-400 hover:bg-gray-800 transition-colors duration-200"
+          >Services</a
+        >
+        <a
+          href="#portfolio"
+          class="block px-6 py-3 text-gray-400 hover:bg-gray-800 transition-colors duration-200"
+          >Portfolio</a
+        >
+        <a
+          href="#testimonials"
+          class="block px-6 py-3 text-gray-400 hover:bg-gray-800 transition-colors duration-200"
+          >Testimonials</a
+        >
+        <a
+          href="#location"
+          class="block px-6 py-3 text-gray-400 hover:bg-gray-800 transition-colors duration-200"
+          >Location</a
+        >
+        <button
+          class="w-full text-left px-6 py-3 text-emerald-500 hover:bg-gray-800 transition-colors duration-200"
+        >
+          Get Started
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <!-- Hero Section with Parallax -->
+      <section
+        class="relative bg-cover bg-center h-screen flex items-center justify-center text-center text-white parallax"
+        style="
+          background-image: url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop');
+        "
+      >
+        <div class="absolute inset-0 bg-black bg-opacity-70"></div>
+        <div class="relative z-10 p-6 max-w-4xl mx-auto fade-in">
+          <h1
+            class="text-4xl md:text-6xl font-extrabold leading-tight mb-4 drop-shadow-md"
+          >
+            Always be your IT solution
+          </h1>
+          <p class="text-lg md:text-xl font-light mb-8 drop-shadow-sm">
+            We are your trusted partner in creating innovative and
+            transformative digital solutions for a brighter business future.
+          </p>
+          <button
+            class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105"
+          >
+            Free Consultation
+          </button>
+        </div>
+      </section>
+
+      <!-- About Section -->
+      <section id="about" class="py-16 md:py-24 bg-gray-900">
+        <div
+          class="container mx-auto px-6 flex flex-col md:flex-row items-center gap-8 md:gap-12"
+        >
+          <div class="md:w-1/2 fade-in">
+            <img
+              src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2070&auto=format&fit=crop"
+              alt="Our Team"
+              class="rounded-3xl shadow-2xl transform hover:scale-105 transition-transform duration-300"
+            />
+          </div>
+          <div class="md:w-1/2 text-center md:text-left fade-in">
+            <h2
+              class="text-3xl md:text-5xl font-bold mb-4 md:mb-6 text-gray-100"
+            >
+              About Us
+            </h2>
+            <p class="text-base md:text-lg text-gray-400 mb-4">
+              ANTARIKS is a leading IT company dedicated to providing the best
+              technology solutions for businesses of all sizes. With an
+              innovative and results-oriented team, we are committed to helping
+              clients achieve their goals through technology.
+            </p>
+            <p class="text-base md:text-lg text-gray-400">
+              Our mission is to be a reliable long-term partner, offering
+              services that not only meet but also exceed expectations, ensuring
+              every project is successful and delivers real value.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features Section -->
+      <section id="features" class="py-16 md:py-24 bg-gray-800">
+        <div class="container mx-auto px-6">
+          <h2
+            class="text-3xl md:text-5xl font-bold text-center mb-10 md:mb-16 text-gray-100"
+          >
+            Our Leading Services
+          </h2>
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10"
+          >
+            <!-- Feature Card 1 -->
+            <div
+              class="bg-gray-900 p-6 md:p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 fade-in border border-gray-700"
+            >
+              <div
+                class="text-emerald-500 mb-4 inline-block p-4 rounded-full bg-emerald-900 bg-opacity-20"
+              >
+                <svg
+                  class="w-8 h-8 md:w-10 md:h-10"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9.75 17L12 21M12 21L14.25 17M12 21V3M21 17H3"
+                  ></path>
+                </svg>
+              </div>
+              <h3 class="text-xl md:text-2xl font-semibold mb-2 text-gray-100">
+                Custom Web Development
+              </h3>
+              <p class="text-gray-400">
+                We design and build unique, responsive websites optimized for
+                the best performance.
+              </p>
+            </div>
+            <!-- Feature Card 2 -->
+            <div
+              class="bg-gray-900 p-6 md:p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 fade-in border border-gray-700"
+            >
+              <div
+                class="text-emerald-500 mb-4 inline-block p-4 rounded-full bg-emerald-900 bg-opacity-20"
+              >
+                <svg
+                  class="w-8 h-8 md:w-10 md:h-10"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                  ></path>
+                </svg>
+              </div>
+              <h3 class="text-xl md:text-2xl font-semibold mb-2 text-gray-100">
+                Innovative Mobile Apps
+              </h3>
+              <p class="text-gray-400">
+                Create a smooth and engaging mobile experience to reach a wider
+                audience.
+              </p>
+            </div>
+            <!-- Feature Card 3 -->
+            <div
+              class="bg-gray-900 p-6 md:p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 fade-in border border-gray-700"
+            >
+              <div
+                class="text-emerald-500 mb-4 inline-block p-4 rounded-full bg-emerald-900 bg-opacity-20"
+              >
+                <svg
+                  class="w-8 h-8 md:w-10 md:h-10"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 8c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zM12 20s-8-6.1-8-12c0-4.42 3.58-8 8-8s8 3.58 8 8c0 5.9-8 12-8 12z"
+                  ></path>
+                </svg>
+              </div>
+              <h3 class="text-xl md:text-2xl font-semibold mb-2 text-gray-100">
+                Top-tier UX/UI Design
+              </h3>
+              <p class="text-gray-400">
+                Focus on an intuitive user experience to create a pleasant and
+                effective interaction.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Portfolio Section -->
+      <section id="portfolio" class="py-16 md:py-24 bg-gray-900">
+        <div class="container mx-auto px-6">
+          <h2
+            class="text-3xl md:text-5xl font-bold text-center mb-10 md:mb-16 text-gray-100"
+          >
+            Our Featured Projects
+          </h2>
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 lg:gap-8"
+          >
+            <!-- Project Item 1 (Large) -->
+            <div
+              class="portfolio-grid-item fade-in col-span-1 md:col-span-2 row-span-2"
+            >
+              <img
+                src="https://img.freepik.com/free-photo/top-view-business-man-working-laptop_23-2148488674.jpg?ga=GA1.1.1111127187.1754882538&semt=ais_incoming&w=740&q=80"
+                alt="Hospital Management System"
+              />
+              <div class="portfolio-overlay">
+                <h3 class="text-lg md:text-2xl font-bold mb-2">
+                  Hospital Management System
+                </h3>
+                <button
+                  class="text-sm md:text-base bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-6 rounded-full transition-colors duration-300 open-modal-btn"
+                  data-title="Hospital Management System"
+                  data-description="Developed an integrated Hospital Management System to streamline patient care by connecting with BPJS and Satu Sehat. This system automates administrative tasks, optimizes medical records management, and enhances service efficiency, ensuring better healthcare experiences for patients and providers alike."
+                  data-image="https://images.unsplash.com/photo-1586773860418-d42a17273934?q=80&w=2070&auto=format&fit=crop"
+                >
+                  See Project
+                </button>
+              </div>
+            </div>
+            <!-- Project Item 2 (Medium) -->
+            <div class="portfolio-grid-item fade-in col-span-1 md:col-span-1">
+              <img
+                src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2070&auto=format&fit=crop"
+                alt="MES (Manufacture Execution System)"
+              />
+              <div class="portfolio-overlay">
+                <h3 class="text-lg font-bold mb-2">
+                  MES (Manufacture Execution System)
+                </h3>
+                <button
+                  class="text-sm bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-4 rounded-full transition-colors duration-300 open-modal-btn"
+                  data-title="MES (Manufacture Execution System)"
+                  data-description="Built a web-based Manufacturing Execution System (MES) tailored for manufacturing companies to monitor, track, and control production in real-time. This system enhances productivity, reduces downtime, and provides comprehensive insights into every stage of the manufacturing process."
+                  data-image="https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2070&auto=format&fit=crop"
+                >
+                  See Project
+                </button>
+              </div>
+            </div>
+            <!-- Project Item 3 (Medium) -->
+            <div class="portfolio-grid-item fade-in col-span-1 md:col-span-1">
+              <img
+                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop"
+                alt="ERP (Enterprise Resource Planning) System"
+              />
+              <div class="portfolio-overlay">
+                <h3 class="text-lg font-bold mb-2">ERP System</h3>
+                <button
+                  class="text-sm bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-4 rounded-full transition-colors duration-300 open-modal-btn"
+                  data-title="ERP (Enterprise Resource Planning) System"
+                  data-description="Created a web-based ERP system for manufacturing companies designed to optimize operations, streamline production, and enhance real-time data access across departments."
+                  data-image="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop"
+                >
+                  See Project
+                </button>
+              </div>
+            </div>
+            <!-- Project Item 4 (Medium) -->
+            <div class="portfolio-grid-item fade-in col-span-1 md:col-span-1">
+              <img
+                src="https://img.freepik.com/free-photo/working-from-home-ergonomic-workstation_23-2149204637.jpg?ga=GA1.1.1111127187.1754882538&semt=ais_incoming&w=740&q=80"
+                alt="Umrah & Hajj Jamaah Management System"
+              />
+              <div class="portfolio-overlay">
+                <h3 class="text-lg font-bold mb-2">Umrah & Hajj System</h3>
+                <button
+                  class="text-sm bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-4 rounded-full transition-colors duration-300 open-modal-btn"
+                  data-title="Umrah & Hajj Jamaah Management System"
+                  data-description="Developed a web-based management system to simplify pilgrim registration, itinerary planning, and document handling. This platform enables efficient tracking and personalized service."
+                  data-image="https://images.unsplash.com/photo-1582294126343-7f3e827a5d1a?q=80&w=2070&auto=format&fit=crop"
+                >
+                  See Project
+                </button>
+              </div>
+            </div>
+            <!-- Project Item 5 (Medium) -->
+            <div class="portfolio-grid-item fade-in col-span-1 md:col-span-1">
+              <img
+                src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto=format&fit=crop"
+                alt="Front-end Application for HRIS"
+              />
+              <div class="portfolio-overlay">
+                <h3 class="text-lg font-bold mb-2">HRIS Front-end App</h3>
+                <button
+                  class="text-sm bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-4 rounded-full transition-colors duration-300 open-modal-btn"
+                  data-title="Front-end Application for HRIS"
+                  data-description="Designed a mobile frontend for HRIS, offering seamless access to HR functions such as attendance, leave requests, and employee profiles. This solution delivers a user-friendly, responsive experience, enabling efficient HR management on the go."
+                  data-image="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto=format&fit=crop"
+                >
+                  See Project
+                </button>
+              </div>
+            </div>
+            <!-- Project Item 6 (Large) -->
+            <div
+              class="portfolio-grid-item fade-in col-span-1 md:col-span-2 row-span-2"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1542435503-956c469947f6?q=80&w=1974&auto=format&fit=crop"
+                alt="Cooperative Financing Analysis System"
+              />
+              <div class="portfolio-overlay">
+                <h3 class="text-lg md:text-2xl font-bold mb-2">
+                  Financing Analysis System
+                </h3>
+                <button
+                  class="text-sm md:text-base bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-6 rounded-full transition-colors duration-300 open-modal-btn"
+                  data-title="Cooperative Financing Analysis System"
+                  data-description="Built a web-based Cooperative Financing Analysis System designed to evaluate loan applications, track repayments, and assess financial health. This platform provides data-driven insights, helping cooperatives manage funds efficiently."
+                  data-image="https://images.unsplash.com/photo-1542435503-956c469947f6?q=80&w=1974&auto=format&fit=crop"
+                >
+                  See Project
+                </button>
+              </div>
+            </div>
+            <!-- Project Item 7 (Medium) -->
+            <div class="portfolio-grid-item fade-in col-span-1 md:col-span-1">
+              <img
+                src="https://img.freepik.com/free-photo/woman-working-renewable-energy-project_23-2148890101.jpg?ga=GA1.1.1111127187.1754882538&semt=ais_incoming&w=740&q=80"
+                alt="Movie Listing App"
+              />
+              <div class="portfolio-overlay">
+                <h3 class="text-lg font-bold mb-2">Movie Listing App</h3>
+                <button
+                  class="text-sm bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-4 rounded-full transition-colors duration-300 open-modal-btn"
+                  data-title="Movie Listing App"
+                  data-description="Created a movie listing app integrating with an API to display and search films in real-time. This application provides users with details like ratings, genres, and summaries, delivering an engaging and dynamic movie-browsing experience."
+                  data-image="https://images.unsplash.com/photo-1588698547463-b8e9b6276188?q=80&w=2070&auto=format&fit=crop"
+                >
+                  See Project
+                </button>
+              </div>
+            </div>
+            <!-- Project Item 8 (Medium) -->
+            <div class="portfolio-grid-item fade-in col-span-1 md:col-span-1">
+              <img
+                src="https://img.freepik.com/free-photo/man-working-tablet-close-up-table_1303-22702.jpg?ga=GA1.1.1111127187.1754882538&semt=ais_incoming&w=740&q=80"
+                alt="Landing Page Designs"
+              />
+              <div class="portfolio-overlay">
+                <h3 class="text-lg font-bold mb-2">Landing Page Designs</h3>
+                <button
+                  class="text-sm bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-4 rounded-full transition-colors duration-300 open-modal-btn"
+                  data-title="Landing Page Designs"
+                  data-description="Designed various landing pages for clients using HTML and popular CMS platforms. These pages are designed to capture leads and promote products or services effectively, featuring engaging layouts, responsive design, and optimized content."
+                  data-image="https://images.unsplash.com/photo-1596526131494-c1842841d13f?q=80&w=2070&auto=format&fit=crop"
+                >
+                  See Project
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Modal for Portfolio Details -->
+      <div
+        id="portfolio-modal"
+        class="modal fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-[999]"
+      >
+        <div
+          class="bg-gray-800 rounded-2xl shadow-2xl overflow-hidden max-w-sm md:max-w-2xl w-full p-6 relative"
+        >
+          <button
+            id="close-modal-btn"
+            class="absolute top-4 right-4 text-gray-400 hover:text-gray-100 transition-colors duration-200"
+          >
+            <svg
+              class="w-8 h-8"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+          </button>
+          <div class="flex flex-col md:flex-row gap-6">
+            <img
+              id="modal-image"
+              src="https://img.freepik.com/free-photo/asia-businesswoman-using-laptop-talk-colleagues-about-plan-video-call-while-smart-working-from-home-living-room_7861-3159.jpg?ga=GA1.1.1111127187.1754882538&semt=ais_incoming&w=740&q=80"
+              alt="Project Image"
+              class="rounded-xl object-cover w-full"
+            />
+            <div class="flex-1">
+              <h3
+                id="modal-title"
+                class="text-2xl md:text-3xl font-bold text-emerald-500 mb-2"
+              ></h3>
+              <p
+                id="modal-description"
+                class="text-gray-400 leading-relaxed text-sm md:text-base"
+              ></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonials Section -->
+      <section id="testimonials" class="py-16 md:py-24 bg-gray-800">
+        <div class="container mx-auto px-6">
+          <h2
+            class="text-3xl md:text-5xl font-bold text-center mb-10 md:mb-16 text-gray-100"
+          >
+            What Our Clients Say
+          </h2>
+          <!-- Testimonial Slider -->
+          <div class="relative max-w-3xl mx-auto">
+            <div id="testimonials-container" class="overflow-hidden">
+              <div
+                id="testimonials-wrapper"
+                class="flex transition-transform duration-500 ease-in-out"
+              >
+                <!-- Testimonial 1 -->
+                <div
+                  class="w-full flex-shrink-0 p-6 md:p-8 bg-gray-900 rounded-2xl shadow-lg border border-gray-700"
+                >
+                  <p class="text-lg md:text-2xl italic text-gray-300 mb-6">
+                    "Working with Antariks has been an outstanding experience.
+                    They not only understood our vision but also exceeded our
+                    expectations with fantastic results."
+                  </p>
+                  <div class="flex items-center">
+                    <img
+                      src="https://placehold.co/60x60/374151/d1d5db?text=A"
+                      alt="Avatar"
+                      class="w-12 h-12 md:w-14 md:h-14 rounded-full mr-4"
+                    />
+                    <div>
+                      <p
+                        class="font-semibold text-gray-100 text-sm md:text-base"
+                      >
+                        Andi Pratama
+                      </p>
+                      <p class="text-xs md:text-sm text-gray-400">
+                        CEO, Tech Solutions
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <!-- Testimonial 2 -->
+                <div
+                  class="w-full flex-shrink-0 p-6 md:p-8 bg-gray-900 rounded-2xl shadow-lg border border-gray-700"
+                >
+                  <p class="text-lg md:text-2xl italic text-gray-300 mb-6">
+                    "Responsive customer service and a highly professional team.
+                    The product they built truly changed the way we interact
+                    with our customers."
+                  </p>
+                  <div class="flex items-center">
+                    <img
+                      src="https://placehold.co/60x60/374151/d1d5db?text=B"
+                      alt="Avatar"
+                      class="w-12 h-12 md:w-14 md:h-14 rounded-full mr-4"
+                    />
+                    <div>
+                      <p
+                        class="font-semibold text-gray-100 text-sm md:text-base"
+                      >
+                        Budi Santoso
+                      </p>
+                      <p class="text-xs md:text-sm text-gray-400">
+                        Founder, Kreasi Food
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <!-- Testimonial 3 -->
+                <div
+                  class="w-full flex-shrink-0 p-6 md:p-8 bg-gray-900 rounded-2xl shadow-lg border border-gray-700"
+                >
+                  <p class="text-lg md:text-2xl italic text-gray-300 mb-6">
+                    "Modern design and seamless functionality. Highly
+                    recommended for anyone looking for the best quality."
+                  </p>
+                  <div class="flex items-center">
+                    <img
+                      src="https://placehold.co/60x60/374151/d1d5db?text=C"
+                      alt="Avatar"
+                      class="w-12 h-12 md:w-14 md:h-14 rounded-full mr-4"
+                    />
+                    <div>
+                      <p
+                        class="font-semibold text-gray-100 text-sm md:text-base"
+                      >
+                        Citra Dewi
+                      </p>
+                      <p class="text-xs md:text-sm text-gray-400">
+                        Marketing Manager, Gaya Hidup
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Navigation Buttons -->
+            <button
+              id="prev-testimonial"
+              class="absolute left-0 top-1/2 -translate-y-1/2 bg-gray-700 rounded-full p-2 shadow-lg hover:bg-gray-600 transition-colors text-white"
+            >
+              <svg
+                class="w-8 h-8"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 19l-7-7 7-7"
+                ></path>
+              </svg>
+            </button>
+            <button
+              id="next-testimonial"
+              class="absolute right-0 top-1/2 -translate-y-1/2 bg-gray-700 rounded-full p-2 shadow-lg hover:bg-gray-600 transition-colors text-white"
+            >
+              <svg
+                class="w-8 h-8"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"
+                ></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Location Section with Map -->
+      <section id="location" class="py-16 md:py-24 bg-gray-900">
+        <div class="container mx-auto px-6 text-center">
+          <h2
+            class="text-3xl md:text-5xl font-bold mb-10 md:mb-12 text-gray-100"
+          >
+            Find Our Office
+          </h2>
+          <div class="flex flex-col md:flex-row gap-8 md:gap-12 items-center">
+            <div class="w-full md:w-1/2 fade-in">
+              <div
+                class="bg-gray-800 p-6 md:p-8 rounded-2xl shadow-xl text-left border border-gray-700"
+              >
+                <h3 class="text-xl md:text-2xl font-bold text-emerald-500 mb-4">
+                  ANTARIKS Headquarters
+                </h3>
+                <p class="text-sm md:text-base text-gray-400 mb-2">
+                  West Java, Indonesia
+                </p>
+                <p class="text-sm md:text-base text-gray-400 mb-2">
+                  Phone: +628123456789
+                </p>
+                <p class="text-sm md:text-base text-gray-400 mb-2">
+                  Email: jivirasgal@gmail.com
+                </p>
+                <a
+                  href="https://maps.google.com/?q=West+Java"
+                  target="_blank"
+                  class="text-emerald-500 font-semibold hover:underline mt-4 inline-block"
+                  >Open in Google Maps</a
+                >
+              </div>
+            </div>
+            <div class="w-full md:w-1/2 fade-in">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.3687399462613!2d106.82270921476906!3d-6.208763095507851!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f44a4d642e05%3A0x7d6b38c0f5f7f3f2!2sMonumen%20Nasional!5e0!3m2!1sen!2sid!4v1628173574187!5m2!1sen!2sid"
+                width="100%"
+                height="450"
+                style="border: 0"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                class="rounded-2xl shadow-xl border border-gray-700"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Call to Action Section -->
+      <section class="bg-emerald-600 py-16 md:py-24 text-white">
+        <div class="container mx-auto px-6 text-center">
+          <h2 class="text-3xl md:text-5xl font-bold mb-4 drop-shadow-md">
+            Ready to Launch Your Project?
+          </h2>
+          <p class="text-base md:text-xl font-light mb-8 drop-shadow-sm">
+            Contact us today for a free consultation and turn your ideas into
+            reality.
+          </p>
+          <button
+            class="bg-white text-emerald-600 font-bold py-4 px-12 rounded-full shadow-lg transition-transform transform hover:scale-105 hover:bg-gray-100"
+          >
+            Contact Us
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-950 text-gray-500 py-12">
+      <div class="container mx-auto px-6 text-center">
+        <div
+          class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0"
+        >
+          <p class="text-sm md:text-lg">
+            &copy; 2025 Antariks. All Rights Reserved.
+          </p>
+          <div class="flex space-x-6">
+            <a href="#" class="hover:text-white transition-colors duration-300">
+              <svg
+                class="w-6 h-6"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  d="M12 2C6.477 2 2 6.484 2 12.017c0 4.417 2.865 8.164 6.83 9.542.5.092.682-.217.682-.483 0-.237-.008-.867-.015-1.701-2.78 6.04-3.368-4.721-3.368-4.721-.454-1.157-1.11-1.467-1.11-1.467-.908-.62.068-.606.068-.606 1.007.07 1.532 1.033 1.532 1.033.89 1.529 2.341 1.087 2.91.831.091-.645.35-1.087.636-1.339-2.22-.253-4.555-1.11-4.555-4.943 0-1.09.39-1.984 1.03-2.675-.103-.253-.448-1.264.098-2.651 0 0 .84-.27 2.75 1.025.798-.222 1.65-.333 2.503-.337 1.25.004 2.502.115 3.3.337 1.91-1.295 2.75-1.025 2.75-1.025.546 1.387.202 2.398.099 2.651.64.691 1.029 1.585 1.029 2.675 0 3.841-2.338 4.687-4.562 4.935.358.307.676.915.676 1.849 0 1.336-.012 2.417-.012 2.748 0 .267.18.58.688.483C19.144 20.17 22 16.423 22 12.017 22 6.484 17.523 2 12 2z"
+                />
+              </svg>
+            </a>
+            <a href="#" class="hover:text-white transition-colors duration-300">
+              <svg
+                class="w-6 h-6"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  d="M8.29 20.25c-4.7 0-8.5-3.8-8.5-8.5s3.8-8.5 8.5-8.5c4.7 0 8.5 3.8 8.5 8.5s-3.8 8.5-8.5 8.5zm-.5-13.5c-.3 0-.6.1-.8.3s-.3.5-.3.8v6.7c0 .3.1.6.3.8s.5.3.8.3h1.7c.3 0 .6-.1.8-.3s.3-.5.3-.8v-6.7c0-.3-.1-.6-.3-.8s-.5-.3-.8-.3h-1.7zm5.5 1.5c.3 0 .6-.1.8-.3s.3-.5.3-.8v-3.7c0-.3-.1-.6-.3-.8s-.5-.3-.8-.3h-1.7c-.3 0-.6.1-.8.3s-.3.5-.3.8v3.7c0 .3.1.6.3.8s.5.3.8.3h1.7z"
+                />
+              </svg>
+            </a>
+            <a href="#" class="hover:text-white transition-colors duration-300">
+              <svg
+                class="w-6 h-6"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  d="M12 2C6.477 2 2 6.477 2 12c0 4.172 2.825 7.7 6.643 8.783.486.09.664-.21.664-.483 0-.237-.008-.867-.012-1.701-2.78.604-3.368-1.226-3.368-1.226-.454-1.157-1.11-1.467-1.11-1.467-.908-.62-.068-.606.068-.606 1.007.07 1.532 1.033 1.532 1.033.89 1.529 2.341 1.087 2.91.831.091-.645.35-1.087.636-1.339-2.22-.253-4.555-1.11-4.555-4.943 0-1.09.39-1.984 1.03-2.675-.103-.253-.448-1.264.098-2.651 0 0 .84-.27 2.75 1.025.798-.222 1.65-.333 2.503-.337 1.25.004 2.502.115 3.3.337 1.91-1.295 2.75-1.025 2.75-1.025.546 1.387.202 2.398.099 2.651.64.691 1.029 1.585 1.029 2.675 0 3.841-2.338 4.687-4.562 4.935.358.307.676.915.676 1.849 0 1.336-.012 2.417-.012 2.748 0 .267.18.58.688.483C19.144 20.17 22 16.423 22 12.017 22 6.484 17.523 2 12 2z"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- JavaScript for Interactivity -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById("mobile-menu-button");
+        const mobileMenu = document.getElementById("mobile-menu");
+        mobileMenuButton.addEventListener("click", () => {
+          mobileMenu.classList.toggle("hidden");
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+          root: null,
+          rootMargin: "0px",
+          threshold: 0.2,
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("in-view");
+              observer.unobserve(entry.target);
+            }
+          });
+        }, observerOptions);
+
+        document
+          .querySelectorAll(".fade-in")
+          .forEach((el) => observer.observe(el));
+
+        // Portfolio Modal
+        const openModalBtns = document.querySelectorAll(".open-modal-btn");
+        const closeModalBtn = document.getElementById("close-modal-btn");
+        const portfolioModal = document.getElementById("portfolio-modal");
+        const modalTitle = document.getElementById("modal-title");
+        const modalDescription = document.getElementById("modal-description");
+        const modalImage = document.getElementById("modal-image");
+
+        openModalBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const parent = btn
+              .closest(".portfolio-grid-item")
+              .querySelector("button");
+            modalTitle.textContent = parent.dataset.title;
+            modalDescription.textContent = parent.dataset.description;
+            modalImage.src = parent.dataset.image;
+            portfolioModal.style.display = "flex";
+          });
+        });
+
+        closeModalBtn.addEventListener("click", () => {
+          portfolioModal.style.display = "none";
+        });
+
+        portfolioModal.addEventListener("click", (e) => {
+          if (e.target.id === "portfolio-modal") {
+            portfolioModal.style.display = "none";
+          }
+        });
+
+        // Testimonial Slider
+        const testimonialsWrapper = document.getElementById(
+          "testimonials-wrapper"
+        );
+        const prevBtn = document.getElementById("prev-testimonial");
+        const nextBtn = document.getElementById("next-testimonial");
+        let currentIndex = 0;
+        const testimonialsCount = testimonialsWrapper.children.length;
+
+        const updateSlider = () => {
+          testimonialsWrapper.style.transform = `translateX(-${
+            currentIndex * 100
+          }%)`;
+        };
+
+        nextBtn.addEventListener("click", () => {
+          currentIndex = (currentIndex + 1) % testimonialsCount;
+          updateSlider();
+        });
+
+        prevBtn.addEventListener("click", () => {
+          currentIndex =
+            (currentIndex - 1 + testimonialsCount) % testimonialsCount;
+          updateSlider();
+        });
+
+        // Auto-slide every 5 seconds
+        setInterval(() => {
+          currentIndex = (currentIndex + 1) % testimonialsCount;
+          updateSlider();
+        }, 5000);
+      });
+    </script>
+  </body>
+</html>
